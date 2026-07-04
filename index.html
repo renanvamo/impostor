@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPOSTOR</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <section id="tela-login" class="tela">
+            <h1 class="titulo-jogo">IMPOSTOR</h1>
+            <div class="card">
+                <div class="grupo-input">
+                    <label for="nome">Seu Nome</label>
+                    <input type="text" id="nome" placeholder="Digite seu apelido..." maxlength="15">
+                </div>
+                
+                <button id="btn-criar" class="btn btn-primario">Criar Sala</button>
+                
+                <div class="divisor"><span>ou</span></div>
+                
+                <div class="grupo-input">
+                    <label for="codigo-sala">Código da Sala</label>
+                    <input type="text" id="codigo-sala" placeholder="EX: ABCD" maxlength="4">
+                </div>
+                <button id="btn-entrar" class="btn btn-secundario">Entrar na Sala</button>
+            </div>
+        </section>
+
+        <section id="tela-setup" class="tela oculto">
+            <div class="header-sala">
+                <h2>Sala: <span id="codigo-exibido" class="texto-dourado">----</span></h2>
+            </div>
+            
+            <div class="card">
+                <h3>Jogadores Conectados</h3>
+                <ul id="lista-jogadores">
+                    </ul>
+                
+                <div id="controles-lider" class="oculto">
+                    <button id="btn-jogar" class="btn btn-primario">JOGAR</button>
+                </div>
+                <p id="msg-espera" class="texto-mutado">Aguardando o líder iniciar o jogo...</p>
+            </div>
+        </section>
+
+        <section id="tela-jogo" class="tela oculto">
+            <div class="card card-jogo">
+                <h2 id="papel-jogador" class="titulo-papel">INOCENTE</h2>
+                
+                <div class="conteudo-secreto">
+                    <p id="label-revelacao">O local secreto é:</p>
+                    <div id="palavra-secreta" class="palavra-destaque">NAVIO FANTASMA</div>
+                </div>
+
+                <div id="controles-fim-jogo" class="oculto">
+                    <button id="btn-voltar" class="btn btn-secundario">Voltar para o Lobby</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

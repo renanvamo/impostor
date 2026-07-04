@@ -1,0 +1,239 @@
+/* Configurações Gerais / Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #050505; /* Um preto ligeiramente mais profundo para o fundo do navegador */
+    color: #E0E0E0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 412px; /* Largura padrão ideal para simular telas modernas de celular */
+    height: 100vh; /* Ocupa a altura total da tela do aparelho */
+    background-color: #0A0A0A; /* O fundo oficial do jogo */
+    border-left: 1px solid #1A1A1A; /* Bordas sutis caso alguém abra no computador */
+    border-right: 1px solid #1A1A1A;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto; /* Permite rolar caso a lista de jogadores fique gigante */
+}
+
+.tela {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente o conteúdo no meio do celular */
+    padding: 30px 20px;
+    min-height: 100%;
+    width: 100%;
+}
+
+/* Utilitários */
+.oculto {
+    display: none !important;
+}
+
+.texto-dourado {
+    color: #D4AF37;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.texto-mutado {
+    color: #888;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
+
+/* Componentes Visual (Cards) */
+.titulo-jogo {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #D4AF37;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+.card {
+    background-color: #121212;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+    color: #D4AF37;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Formulários e Inputs */
+.grupo-input {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grupo-input label {
+    font-size: 0.85rem;
+    color: #AAA;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.grupo-input input {
+    background-color: #1A1A1A;
+    border: 1px solid #333;
+    color: #FFF;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.grupo-input input:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+.divisor {
+    text-align: center;
+    margin: 15px 0;
+    color: #444;
+    position: relative;
+}
+
+.divisor span {
+    background-color: #121212;
+    padding: 0 10px;
+    font-size: 0.9rem;
+}
+
+/* Botões */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primario {
+    background-color: #D4AF37;
+    border: 1px solid #D4AF37;
+    color: #0A0A0A;
+}
+
+.btn-primario:hover {
+    background-color: #FFF;
+    border-color: #FFF;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.btn-secundario {
+    background-color: transparent;
+    border: 1px solid #444;
+    color: #FFF;
+}
+
+.btn-secundario:hover {
+    border-color: #D4AF37;
+    color: #D4AF37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Lista de Jogadores (Setup) */
+.header-sala {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#lista-jogadores {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+#lista-jogadores li {
+    background-color: #1A1A1A;
+    border: 1px solid #222;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-expulsar {
+    background: transparent;
+    border: none;
+    color: #FF4D4D;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+    font-size: 1.1rem;
+}
+
+.btn-expulsar:hover {
+    color: #FF1A1A;
+}
+
+/* Tela de Jogo Activa */
+.card-jogo {
+    text-align: center;
+    padding: 40px 25px;
+}
+
+.titulo-papel {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.impostor-style {
+    color: #FF4D4D;
+    text-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+}
+
+.inocente-style {
+    color: #2ECC71;
+    text-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+.conteudo-secreto {
+    margin: 30px 0;
+}
+
+.palavra-destaque {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #D4AF37;
+    margin-top: 10px;
+    border: 2px dashed #D4AF37;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #1A1A1A;
+}
