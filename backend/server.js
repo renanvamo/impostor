@@ -13,11 +13,10 @@ const io = new Server(httpServer, {
 
 // Configuração da conexão com o seu Postgres no Docker
 const pool = new Pool({
-    user: 'postgres',          // seu usuário do banco
-    host: 'localhost',
-    database: 'impostor_db',   // nome do banco de dados que você criou
-    password: 'sua_senha_aqui', // sua senha do banco
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false // Necessário para conexões seguras na maioria dos bancos na nuvem
+    }
 });
 
 const salas = {}; 
