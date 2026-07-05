@@ -37,6 +37,10 @@ const chkDicas = document.getElementById('chk-dicas');
 const containerDica = document.getElementById('container-dica');
 const textoDica = document.getElementById('texto-dica');
 
+const toastErro = document.getElementById('toast-erro');
+const msgErroTexto = document.getElementById('msg-erro-texto');
+let temporizadorErro = null;
+
 // ==========================================
 // FUNÇÕES DE NAVEGAÇÃO ENTRE TELAS
 // ==========================================
@@ -55,8 +59,7 @@ function irParaTela(telaAlvo) {
 // Criar Sala
 btnCriar.addEventListener('click', () => {
     meuNome = inputNome.value.trim();
-    if (!meuNome) return alert("Por favor, digite seu nome!");
-    
+    if (!meuNome) return mostrarErro("Por favor, digite seu nome!");    
     socket.emit('criarSala', { nomeJogador: meuNome });
 });
 
@@ -65,8 +68,8 @@ btnEntrar.addEventListener('click', () => {
     meuNome = inputNome.value.trim();
     const codigo = inputCodigo.value.trim().toUpperCase();
     
-    if (!meuNome) return alert("Por favor, digite seu nome!");
-    if (!codigo) return alert("Por favor, digite o código da sala!");
+    if (!meuNome) return mostrarErro("Por favor, digite seu nome!");
+    if (!codigo) return mostrarErro("Por favor, digite o código da sala!");
     
     socket.emit('entrarSala', { codigoSala: codigo, nomeJogador: meuNome });
 });
@@ -99,7 +102,7 @@ function expulsar(jogadorId) {
 
 // Tratamento de erros vindo do servidor
 socket.on('erro', (msg) => {
-    alert(msg);
+    mostrarErro(msg);
 });
 
 // Quando a sala é criada com sucesso
@@ -174,7 +177,7 @@ function atualizarListaInterface(jogadores, liderId) {
 
 // Jogador foi expulso pelo líder
 socket.on('foiExpulso', () => {
-    alert("Você foi expulso da sala pelo líder!");
+    mostrarErro("Você foi expulso da sala pelo líder!");
     salaAtual = null;
     ehLider = false;
     irParaTela(telaLogin);
@@ -229,3 +232,18 @@ socket.on('resultadoSorteio', ({ papel, local, dica }) => {
 socket.on('retornadoAoLobby', () => {
     irParaTela(telaSetup);
 });
+
+function mostrarErro(mensagem) {
+    msgErroTexto.innerText = mensagem; // CORRIGIDO: de mensaje para mensagem
+    toastErro.classList.remove('oculto');
+
+    // Se o usuário gerar outro erro antes do anterior sumir, limpa o tempo antigo
+    if (temporizadorErro) {
+        clearTimeout(temporizadorErro);
+    }
+
+    // O erro some automaticamente após 4 segundos (4000 milissegundos)
+    temporizadorErro = setTimeout(() => {
+        toastErro.classList.add('oculto');
+    }, 4000);
+}

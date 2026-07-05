@@ -260,3 +260,34 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+
+/* Container do Alerta Flutuante */
+.toast-erro {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(214, 40, 40, 0.95); /* Vermelho moderno e intenso */
+    color: #FFFFFF;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    z-index: 9999; /* Garante que fica acima de qualquer tela */
+    transition: opacity 0.3s ease, top 0.3s ease;
+}
+
+/* Ícone de atenção */
+.icone-alerta {
+    font-size: 1.1rem;
+}
+
+/* Certifique-se de que sua classe .oculto oculte o elemento corretamente */
+.oculto {
+    display: none !important;
+}
