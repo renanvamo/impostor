@@ -237,3 +237,26 @@ body {
     border-radius: 8px;
     background-color: #1A1A1A;
 }
+
+/* Container de Dica Elegante */
+.container-dica-moderno {
+    margin-top: 25px;
+    padding: 12px 20px;
+    background: rgba(212, 175, 55, 0.06); /* Um toque sutil do dourado no fundo */
+    border: 1px solid rgba(212, 175, 55, 0.2); /* Borda fina e discreta */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #CCCCCC;
+    transition: all 0.3s ease;
+}
+
+/* O texto em destaque da dica */
+.dica-destaque {
+    color: #D4AF37; /* Dourado combinando com o tema */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

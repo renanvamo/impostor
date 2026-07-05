@@ -8,6 +8,7 @@ const socket = io(URL_BACKEND);
 // Variáveis de estado local
 let salaAtual = null;
 let meuNome = "";
+let ehLider = false;
 
 // Elementos das Telas
 const telaLogin = document.getElementById('tela-login');
@@ -31,6 +32,10 @@ const papelJogador = document.getElementById('papel-jogador');
 const labelRevelacao = document.getElementById('label-revelacao');
 const palavraSecreta = document.getElementById('palavra-secreta');
 const controlesFimJogo = document.getElementById('controles-fim-jogo');
+
+const chkDicas = document.getElementById('chk-dicas');
+const containerDica = document.getElementById('container-dica');
+const textoDica = document.getElementById('texto-dica');
 
 // ==========================================
 // FUNÇÕES DE NAVEGAÇÃO ENTRE TELAS
@@ -66,10 +71,11 @@ btnEntrar.addEventListener('click', () => {
     socket.emit('entrarSala', { codigoSala: codigo, nomeJogador: meuNome });
 });
 
-// Iniciar Partida (Apenas Líder)
+// Iniciar o Jogo (Apenas o Líder dispara)
 btnJogar.addEventListener('click', () => {
     if (salaAtual) {
-        socket.emit('iniciarJogo', { codigoSala: salaAtual });
+        const usarDicas = chkDicas.checked; // true ou false
+        socket.emit('iniciarJogo', { codigoSala: salaAtual, usarDicas: chkDicas.checked });
     }
 });
 
@@ -80,7 +86,7 @@ btnVoltar.addEventListener('click', () => {
     }
 });
 
-// Função para disparar a expulsão de alguém
+// Função para disparar a expulsion de alguém
 function expulsar(jogadorId) {
     if (salaAtual) {
         socket.emit('expulsarJogador', { codigoSala: salaAtual, jogadorId });
@@ -99,10 +105,13 @@ socket.on('erro', (msg) => {
 // Quando a sala é criada com sucesso
 socket.on('salaCriada', ({ codigoSala, jogadores }) => {
     salaAtual = codigoSala;
+    ehLider = true; // Define como líder no estado global
     codigoExibido.innerText = codigoSala;
     irParaTela(telaSetup);
+
+    const txtCodigo = document.getElementById('txt-codigo-sala');
+    if (txtCodigo) txtCodigo.innerText = codigoSala;
     
-    // Como acabou de criar, ele é o líder
     controlesLider.classList.remove('oculto');
     msgEspera.classList.add('oculto');
     
@@ -111,15 +120,21 @@ socket.on('salaCriada', ({ codigoSala, jogadores }) => {
 
 // Atualização constante da lista de jogadores na sala
 socket.on('atualizarJogadores', ({ jogadores, liderId }) => {
-    // Se a pessoa não estava com sala salva (entrou agora)
+    // Se a pessoa não estava com sala salva (entrou agora via código)
     if (!salaAtual) {
         salaAtual = inputCodigo.value.trim().toUpperCase();
         codigoExibido.innerText = salaAtual;
         irParaTela(telaSetup);
+        
+        const txtCodigo = document.getElementById('txt-codigo-sala');
+        if (txtCodigo) txtCodigo.innerText = salaAtual;
     }
 
+    // RESOLUÇÃO DO ERRO: Atualiza dinamicamente se você é o líder ou não nesta rodada
+    ehLider = (socket.id === liderId);
+
     // Gerencia o que aparece se for o líder ou mero jogador
-    if (socket.id === liderId) {
+    if (ehLider) {
         controlesLider.classList.remove('oculto');
         msgEspera.classList.add('oculto');
     } else {
@@ -161,29 +176,49 @@ function atualizarListaInterface(jogadores, liderId) {
 socket.on('foiExpulso', () => {
     alert("Você foi expulso da sala pelo líder!");
     salaAtual = null;
+    ehLider = false;
     irParaTela(telaLogin);
 });
 
 // Resultado do sorteio (Transição para a tela de jogo)
-socket.on('resultadoSorteio', ({ papel, local }) => {
+socket.on('resultadoSorteio', ({ papel, local, dica }) => {
+    // Transiciona o usuário para a tela onde a palavra aparece
     irParaTela(telaJogo);
     
-    // Altera estilos com base no papel secreto recebido de forma segura
+    // Limpa os dados de dicas de rodadas anteriores
+    containerDica.classList.add('oculto');
+    textoDica.innerText = "";
+
+    // Evita erros de undefined forçando o local a virar uma string válida
+    const localTexto = String(local || '').toUpperCase();
+
+    // Configura o visual da tela dependendo do papel sorteado pelo servidor
     if (papel === 'impostor') {
         papelJogador.innerText = "VOCÊ É O IMPOSTOR";
         papelJogador.className = "titulo-papel impostor-style";
-        labelRevelacao.innerText = "Descubra o local sem ser pego!";
+        labelRevelacao.innerText = "Descubra o local secreto sem que descubram você!";
         palavraSecreta.innerText = "???";
+        console.log ("Dica recebida do servidor:", dica);
+        console.log ("Papel do jogador:", papel);
+        console.log ("É líder?", ehLider);
+        // Se o líder ativou as dicas e você é inocente, a dica é exibida aqui
+        if (dica) {
+            containerDica.classList.remove('oculto');
+            textoDica.innerText = dica;
+        } else {
+            containerDica.classList.add('oculto');
+        }
     } else {
         papelJogador.innerText = "VOCÊ É INOCENTE";
         papelJogador.className = "titulo-papel inocente-style";
         labelRevelacao.innerText = "O local secreto é:";
-        palavraSecreta.innerText = local.toUpperCase();
-    }
+        palavraSecreta.innerText = localTexto;
+        
 
-    // Só exibe o botão de voltar para o líder gerenciar a sala
-    // Descobrimos se ele é o lider olhando se o botão de jogar do setup estava visível
-    if (!controlesLider.classList.contains('oculto')) {
+    }
+    
+    // Agora o sistema reconhece perfeitamente quem é o líder da sala!
+    if (ehLider) {
         controlesFimJogo.classList.remove('oculto');
     } else {
         controlesFimJogo.classList.add('oculto');

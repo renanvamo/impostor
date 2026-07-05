@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMPOSTOR</title>
     <link rel="stylesheet" href="style.css">
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 </head>
 <body>
 
@@ -41,6 +40,10 @@
                     </ul>
                 
                 <div id="controles-lider" class="oculto">
+                    <div class="grupo-switch" style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="chk-dicas" style="width: 20px; height: 20px; accent-color: #D4AF37;">
+                        <label for="chk-dicas" style="color: #E0E0E0; cursor: pointer; font-weight: bold;">Ativar Dicas na Rodada</label>
+                    </div>
                     <button id="btn-jogar" class="btn btn-primario">JOGAR</button>
                 </div>
                 <p id="msg-espera" class="texto-mutado">Aguardando o líder iniciar o jogo...</p>
@@ -54,6 +57,10 @@
                 <div class="conteudo-secreto">
                     <p id="label-revelacao">O local secreto é:</p>
                     <div id="palavra-secreta" class="palavra-destaque">CASA MAL ASSOMBRADA</div>
+                </div>
+                <div id="container-dica" class="container-dica-moderno oculto">
+                    <span>💡 Dica da Rodada:</span>
+                    <span id="texto-dica" class="dica-destaque"></span>
                 </div>
 
                 <div id="controles-fim-jogo" class="oculto">
