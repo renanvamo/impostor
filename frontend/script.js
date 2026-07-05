@@ -1,5 +1,9 @@
 // Conecta com o servidor backend
-const socket = io('http://localhost:3000');
+const URL_BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000'
+    : 'https://impostor-x1c9.onrender.com';
+
+const socket = io(URL_BACKEND);
 
 // Variáveis de estado local
 let salaAtual = null;
